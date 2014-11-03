@@ -508,6 +508,7 @@ relay_traffic( int ssockfd, int dsockfd, struct server_ctx* ctx,
     struct rdata_opt ropt;
     time_t pause_time = 0, rfr_tm = time(NULL);
     sigset_t ubset;
+    int opt = 25165824;
 
     const int ALLOW_PAUSES = get_flagval( "UDPXY_ALLOW_PAUSES", 0 );
     const ssize_t MAX_PAUSE_MSEC =
@@ -568,7 +569,7 @@ relay_traffic( int ssockfd, int dsockfd, struct server_ctx* ctx,
 
             rc = send_http_response( dsockfd, 200, "OK" );
             if( 0 != rc ) break;
-            int opt = 25165824;
+
             setsockopt(dsockfd, SOL_SOCKET, SO_RCVBUF, &opt, sizeof(opt));
             setsockopt(dsockfd, SOL_SOCKET, SO_SNDBUF, &opt, sizeof(opt));
 
