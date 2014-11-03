@@ -568,6 +568,9 @@ relay_traffic( int ssockfd, int dsockfd, struct server_ctx* ctx,
 
             rc = send_http_response( dsockfd, 200, "OK" );
             if( 0 != rc ) break;
+            int opt = 25165824;
+            setsockopt(dsockfd, SOL_SOCKET, SO_RCVBUF, &opt, sizeof(opt));
+            setsockopt(dsockfd, SOL_SOCKET, SO_SNDBUF, &opt, sizeof(opt));
 
             /* timeshift: to detect PAUSE make destination
             * socket non-blocking, otherwise make it blocking
